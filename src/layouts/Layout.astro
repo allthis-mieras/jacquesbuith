@@ -21,7 +21,7 @@ const visualEditingEnabled =
 // Check for preview mode
 const requestUrl = new URL(Astro.request.url);
 const isPreview = requestUrl.searchParams.has('preview');
-const hasPreviewCookie = Astro.cookies.has('__prerender_bypass');
+const hasPreviewCookie = Astro.cookies.has('sanity-preview');
 const showVisualEditing = visualEditingEnabled && (isPreview || hasPreviewCookie);
 ---
 

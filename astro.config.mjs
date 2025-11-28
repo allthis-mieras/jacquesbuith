@@ -17,7 +17,14 @@ const {
 
 
 export default defineConfig({
-  
+  vite: {
+    ssr: {
+      noExternal: ['styled-components'],
+    },
+    optimizeDeps: {
+      include: ['styled-components'],
+    },
+  },
   integrations: [sanity({
     projectId: PUBLIC_SANITY_PROJECT_ID,
     dataset: PUBLIC_SANITY_DATASET,
@@ -40,29 +47,3 @@ export default defineConfig({
   }],
   },
 });
-
-const visualEditingEnabled = PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true';
-     const perspective = visualEditingEnabled ? 'previewDrafts' : 'published';
-
-// const client = createClient({
-//  projectId: PUBLIC_SANITY_PROJECT_ID,
-//     dataset: PUBLIC_SANITY_DATASET,
-    
-//  useCdn: false, // must be false when using 'previewDrafts'
-//   perspective: perspective, // 'raw' | 'previewDrafts' | 'published'
-//   apiVersion: "2023-05-03", // use current date (YYYY-MM-DD) to target the latest API version
-// });
-
-
-// Fetch our redirects from Sanity via GROQ
-// const redirectData = await client.fetch(
-//   `*[_type == "redirect"]{
-//       "from": from.current,
-//       "to": to.current
-//     }`
-// );
-
- // Create empty object to add our redirects to
-// const redirects = {};
-
-

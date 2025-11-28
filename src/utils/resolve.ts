@@ -5,7 +5,6 @@ import type { PresentationPluginOptions } from "sanity/presentation";
 
 export const resolve: PresentationPluginOptions["resolve"] = {
   locations: {
-    // Add more locations for other post types
     post: defineLocations({
       select: {
         title: "title",
@@ -20,6 +19,33 @@ export const resolve: PresentationPluginOptions["resolve"] = {
           { title: "Posts", href: location.origin },
         ],
       }),
+    }),
+    page: defineLocations({
+      select: {
+        title: "title",
+        slug: "slug.current",
+        type: "type",
+      },
+      resolve: (doc) => {
+        const locations = [];
+        
+        // Homepage goes to root
+        if (doc?.type === "homepage") {
+          locations.push({
+            title: doc?.title || "Homepage",
+            href: "/",
+          });
+        } 
+        // Default pages go to their slug
+        else if (doc?.slug) {
+          locations.push({
+            title: doc?.title || "Untitled",
+            href: `/${doc.slug}`,
+          });
+        }
+        
+        return { locations };
+      },
     }),
   },
 };

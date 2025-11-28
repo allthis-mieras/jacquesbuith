@@ -5,11 +5,6 @@ const projectId =
 const dataset =
   import.meta.env.PUBLIC_SANITY_STUDIO_DATASET! ||
   import.meta.env.PUBLIC_SANITY_DATASET!;
-
-// const previewUrls = import.meta.env.SANITY_STUDIO_PREVIEW_URLS?.split(",") || [];
-// const isPreviewMode = import.meta.env.PUBLIC_PREVIEW_MODE === 'true';
-
-// Feel free to remove this check if you don't need it
 if (!projectId || !dataset) {
   throw new Error(
     `Missing environment variable(s). Check if named correctly in .env file.\n\nShould be:\nPUBLIC_SANITY_STUDIO_PROJECT_ID=${projectId}\nPUBLIC_SANITY_STUDIO_DATASET=${dataset}\n\nAvailable environment variables:\n${JSON.stringify(
@@ -26,17 +21,12 @@ import { structureTool } from 'sanity/structure'
 import { presentationTool } from 'sanity/presentation'
 import { schemaTypes } from "./schema";
 import { resolve } from "./src/utils/resolve";
-import { CogIcon, DocumentIcon } from "@sanity/icons";
-// import type { SanityDocument } from 'sanity'
-
-
-
-
+import { CogIcon } from "@sanity/icons";
 // Define the actions that should be available for singleton documents
 const singletonActions = new Set(["publish", "discardChanges", "restore"])
 
 // Define the singleton document types
-const singletonTypes = new Set(["settings", "about"])
+const singletonTypes = new Set(["settings"])
 
 export default defineConfig({
   name: "JacquesBuith",
@@ -53,16 +43,6 @@ export default defineConfig({
             S.documentTypeListItem("post").title("Posts"),
              S.documentTypeListItem("page").title("Pages"),
             // Our singleton type has a list item with a custom child
-           
-            S.listItem()
-              .title("About")
-              .id("about")
-              .icon(DocumentIcon)
-              .child(
-                S.document()
-                  .schemaType("about")
-                  .documentId("about")
-              ),
              S.listItem()
               .title("Settings")
               .id("settings")
@@ -75,7 +55,6 @@ export default defineConfig({
                   .schemaType("settings")
                   .documentId("settings")
               ),
-            // Singleton for About Page
             
           ]),
     }),
@@ -92,8 +71,6 @@ export default defineConfig({
       },
     }),
     visionTool(),
-   
-
   ],
   schema: {
     types: schemaTypes,
@@ -112,29 +89,49 @@ export default defineConfig({
 
     productionUrl: async (prev, context) => {
       const { getClient, dataset, document } = context;
-    const client = getClient({ apiVersion: '2023-05-31' });
+      const client = getClient({ apiVersion: '2023-05-31' });
 
-    if (document._type === 'post') {
-      const slug = await client.fetch(
-        `*[_type == 'post' && _id == $postId][0].slug.current`,
-        { postId: document._id }
-      );
+      if (document._type === 'post') {
+        const slug = await client.fetch(
+          `*[_type == 'post' && _id == $postId][0].slug.current`,
+          { postId: document._id }
+        );
 
-      if (!slug) {
-        return prev; // Als de slug niet wordt gevonden, gebruik de vorige URL
+        if (!slug) {
+          return prev;
+        }
+
+        const params = new URLSearchParams();
+        params.set('preview', 'true');
+        params.set('dataset', dataset);
+
+        return `http://localhost:4321/post/${slug}?${params}`;
       }
 
-      const params = new URLSearchParams();
-      params.set('preview', 'true');
-      params.set('dataset', dataset);
+      if (document._type === 'page') {
+        const pageData = await client.fetch(
+          `*[_type == 'page' && _id == $pageId][0]{
+            "slug": slug.current,
+            "type": type
+          }`,
+          { pageId: document._id }
+        );
 
-      return `http://localhost:4321/post/${slug}?${params}`;
-    }
+        if (!pageData) {
+          return prev;
+        }
 
-    return prev;
+        const params = new URLSearchParams();
+        params.set('preview', 'true');
+        params.set('dataset', dataset);
+
+        // Homepage goes to root, other pages to their slug
+        const path = pageData.type === 'homepage' ? '' : `/${pageData.slug}`;
+        return `http://localhost:4321${path}?${params}`;
+      }
+
+      return prev;
     }
   },
-
-  
 })
 

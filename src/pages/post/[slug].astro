@@ -11,7 +11,8 @@ import { urlFor } from "../../utils/image";
 
 // import type { Image } from "@sanity/types";
 
-export const prerender = true;
+// Prerendering disabled for Visual Editing support
+// export const prerender = true;
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 const { slug } = Astro.params as Params;

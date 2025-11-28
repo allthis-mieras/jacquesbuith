@@ -4,18 +4,11 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   const url = new URL(request.url);
   const slug = url.searchParams.get('slug') || '/';
   
-  // Set preview cookie
-  cookies.set('__prerender_bypass', '', {
+  // Set preview cookie for Astro SSR
+  cookies.set('sanity-preview', 'true', {
     httpOnly: true,
     secure: true,
-    sameSite: 'none',
-    maxAge: 60 * 60 * 24 // 24 hours
-  });
-
-  cookies.set('__next_preview_data', '', {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
+    sameSite: 'lax',
     maxAge: 60 * 60 * 24 // 24 hours
   });
 
