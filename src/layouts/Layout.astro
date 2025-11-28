@@ -17,6 +17,12 @@ const {
 
 const visualEditingEnabled =
   import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED == "true";
+
+// Check for preview mode
+const requestUrl = new URL(Astro.request.url);
+const isPreview = requestUrl.searchParams.has('preview');
+const hasPreviewCookie = Astro.cookies.has('__prerender_bypass');
+const showVisualEditing = visualEditingEnabled && (isPreview || hasPreviewCookie);
 ---
 
 <html lang="en">
@@ -54,7 +60,7 @@ const visualEditingEnabled =
         <slot />
       </main>
       <Footer />
-      <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
+      <VisualEditing enabled={showVisualEditing} zIndex={1000} />
     </div>
   </body>
 </html>

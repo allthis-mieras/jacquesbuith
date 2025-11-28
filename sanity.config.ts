@@ -82,7 +82,14 @@ export default defineConfig({
       presentationTool({
       resolve,
       title: 'Visual Editor',
-      previewUrl: `${location.origin}?preview=true`,
+      previewUrl: {
+        origin: typeof location !== 'undefined' ? location.origin : 'http://localhost:4321',
+        preview: '/api/preview',
+        draftMode: {
+          enable: '/api/preview',
+          disable: '/api/preview/disable'
+        }
+      },
     }),
     visionTool(),
    
