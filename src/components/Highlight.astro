@@ -17,9 +17,9 @@ interface Props {
 // Generate the URL for the internal page, handle cases where `button.url` may not exist
 const { text, button, image }: Props = Astro.props;
 
-const linkUrl = button.url ? `/${button.url}` : "#";
+const linkUrl = button?.url ? `/${button.url}` : "#";
 
-const imageUrl = urlFor(image.asset.url ?? {}).url();
+const imageUrl = image?.asset?.url ? urlFor(image.asset.url).url() : null;
 ---
 
 <section class="feature">
@@ -29,7 +29,7 @@ const imageUrl = urlFor(image.asset.url ?? {}).url();
   </div>
 
   {
-    image.asset.url && (
+    imageUrl && (
       <Image
         src={imageUrl}
         inferSize

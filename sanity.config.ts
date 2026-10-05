@@ -15,6 +15,9 @@ if (!projectId || !dataset) {
   );
 }
 
+// Get production URL - gebruik location.origin zoals in de guide
+const productionUrl = typeof location !== 'undefined' ? location.origin : 'http://localhost:4321';
+
 import { defineConfig } from "sanity";
 import { visionTool } from "@sanity/vision";
 import { structureTool } from 'sanity/structure'
@@ -58,19 +61,11 @@ export default defineConfig({
             
           ]),
     }),
-      presentationTool({
-      resolve,
-      title: 'Visual Editor',
-      previewUrl: {
-        origin: typeof location !== 'undefined' ? location.origin : 'http://localhost:4321',
-        preview: '/api/preview',
-        draftMode: {
-          enable: '/api/preview',
-          disable: '/api/preview/disable'
-        }
-      },
-    }),
     visionTool(),
+    presentationTool({
+      resolve,
+      previewUrl: productionUrl,
+    }),
   ],
   schema: {
     types: schemaTypes,
@@ -87,51 +82,10 @@ export default defineConfig({
         ? input.filter(({ action }) => action && singletonActions.has(action))
         : input,
 
-    productionUrl: async (prev, context) => {
-      const { getClient, dataset, document } = context;
-      const client = getClient({ apiVersion: '2023-05-31' });
-
-      if (document._type === 'post') {
-        const slug = await client.fetch(
-          `*[_type == 'post' && _id == $postId][0].slug.current`,
-          { postId: document._id }
-        );
-
-        if (!slug) {
-          return prev;
-        }
-
-        const params = new URLSearchParams();
-        params.set('preview', 'true');
-        params.set('dataset', dataset);
-
-        return `http://localhost:4321/post/${slug}?${params}`;
-      }
-
-      if (document._type === 'page') {
-        const pageData = await client.fetch(
-          `*[_type == 'page' && _id == $pageId][0]{
-            "slug": slug.current,
-            "type": type
-          }`,
-          { pageId: document._id }
-        );
-
-        if (!pageData) {
-          return prev;
-        }
-
-        const params = new URLSearchParams();
-        params.set('preview', 'true');
-        params.set('dataset', dataset);
-
-        // Homepage goes to root, other pages to their slug
-        const path = pageData.type === 'homepage' ? '' : `/${pageData.slug}`;
-        return `http://localhost:4321${path}?${params}`;
-      }
-
-      return prev;
-    }
+    // productionUrl will be added back when we configure presentationTool
+    // productionUrl: async (prev, context) => {
+    //   ...
+    // }
   },
 })
 

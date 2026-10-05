@@ -1,6 +1,6 @@
 // ./src/sanity/lib/resolve.ts
 
-import { defineLocations } from "sanity/presentation";
+import { defineDocuments, defineLocations } from "sanity/presentation";
 import type { PresentationPluginOptions } from "sanity/presentation";
 
 export const resolve: PresentationPluginOptions["resolve"] = {
@@ -16,7 +16,7 @@ export const resolve: PresentationPluginOptions["resolve"] = {
             title: doc?.title || "Untitled",
             href: `/post/${doc?.slug}`,
           },
-          { title: "Posts", href: location.origin },
+          { title: "Posts", href: typeof location !== 'undefined' ? location.origin : '/' },
         ],
       }),
     }),
@@ -48,4 +48,18 @@ export const resolve: PresentationPluginOptions["resolve"] = {
       },
     }),
   },
+  mainDocuments: defineDocuments([
+    {
+      route: '/post/:slug',
+      filter: `_type == "post" && slug.current == $slug`,
+    },
+    {
+      route: '/:slug',
+      filter: `_type == "page" && slug.current == $slug`,
+    },
+    {
+      route: '/',
+      filter: `_type == "page" && type == "homepage"`,
+    },
+  ]),
 };

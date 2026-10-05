@@ -23,18 +23,28 @@ export default defineConfig({
     },
     optimizeDeps: {
       include: ['styled-components'],
+      exclude: [
+        'PostMessageRefreshMutations',
+        'PostMessagePreviewSnapshots',
+        'PresentationToolGrantsCheck',
+        'refractor',
+      ],
     },
   },
-  integrations: [sanity({
-    projectId: PUBLIC_SANITY_PROJECT_ID,
-    dataset: PUBLIC_SANITY_DATASET,
-    apiVersion: "2023-05-31",
-    studioBasePath: "/admin", 
+  integrations: [
+    sanity({
+      projectId: PUBLIC_SANITY_PROJECT_ID,
+      dataset: PUBLIC_SANITY_DATASET,
+      apiVersion: "2023-05-31",
+      studioBasePath: "/admin",
+      useCdn: PUBLIC_SANITY_USE_CDN === "true",
       stega: {
-        studioUrl: "/admin"
-    },
-    useCdn: PUBLIC_SANITY_USE_CDN === "true", 
-  }), react(), icon()],
+        studioUrl: "/admin",
+      },
+    }),
+    react(),
+    icon()
+  ],
   output: 'server',
   adapter: netlify({
     imageCDN: false,

@@ -8,12 +8,18 @@ import { getHomepage } from "../utils/sanity";
 import { getPosts } from "../utils/sanity";
 
 const homepage = await getHomepage();
-const { heroText, heroSlides } = homepage.hero;
-const { text, button, image } = homepage.highlight;
+
+// Provide fallback values if homepage is not found
+const heroText = homepage?.hero?.heroText || "";
+const heroSlides = homepage?.hero?.heroSlides || [];
+const text = homepage?.highlight?.text || "";
+const button = homepage?.highlight?.button || { url: "", label: "" };
+const image = homepage?.highlight?.image || null;
 
 console.log("homepage.highlight:", text, button, image);
 
 const posts = await getPosts();
+const postsArray = Array.isArray(posts) ? posts : [];
 ---
 
 <Layout title="Home">
@@ -22,8 +28,8 @@ const posts = await getPosts();
   <section class="posts">
     <div class="container stretch">
       {
-        posts.length ? (
-          posts.map((post) => <Card post={post} />)
+        postsArray.length > 0 ? (
+          postsArray.map((post) => <Card post={post} />)
         ) : (
           <p>no posts</p>
         )

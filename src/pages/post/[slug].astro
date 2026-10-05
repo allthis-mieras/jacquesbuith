@@ -18,6 +18,8 @@ type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 const { slug } = Astro.params as Params;
 
 export async function getStaticPaths() {
+  // For static paths, always use published content only (no request/cookies)
+  // This ensures drafts are not included in static generation
   const posts = await getPosts();
   return posts.map((post) => ({
     params: { slug: post.slug.current },
