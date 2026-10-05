@@ -15,6 +15,7 @@ const {
   author = "Jacuqes Buith",
 } = Astro.props;
 
+// Volgens officiële guide: alleen checken op environment variable
 const visualEditingEnabled =
   import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED == "true";
 ---
@@ -54,7 +55,7 @@ const visualEditingEnabled =
         <slot />
       </main>
       <Footer />
-      <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
+      <VisualEditing enabled={visualEditingEnabled} />
     </div>
   </body>
 </html>

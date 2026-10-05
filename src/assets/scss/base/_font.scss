@@ -155,7 +155,7 @@ body {
 
   h5 {
     font-size: var(--fontsize-2);
-    line-height: 120%;
+    line-height: 150%;
     margin-top: 0.5em;
 
     @include breakpoint(medium) {
@@ -166,8 +166,6 @@ body {
         font-size: var(--fontsize-0);
       }
     }
-
-    line-height: 150%;
 
     @include breakpoint(medium) {
       font-size: var(--fontsize-2);
