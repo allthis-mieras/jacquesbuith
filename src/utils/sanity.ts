@@ -72,7 +72,7 @@ export interface ImageAsset {
 
 export async function getPosts(): Promise<Post[]> {
   // Always use loadQuery - it will automatically use 'published' perspective
-  // when Visual Editing is disabled, and 'previewDrafts' when enabled
+  // when Visual Editing is disabled, and 'drafts' when enabled
   const { data } = await loadQuery<Post[]>({
     query: groq`*[_type == "post" && defined(slug.current)] | order(_createdAt desc)`,
   });

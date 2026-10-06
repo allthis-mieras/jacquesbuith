@@ -1,74 +1,88 @@
-# A minimal Astro site with Sanity Studio
+# jacquesbuith.netlify.app
 
-This starter uses [Astro](https://astro.build/) for the front end and [Sanity](https://sanity.io/) to handle its content.
+> Persoonlijke website voor Jacques Buith: profiel, posts en media, beheerd in Sanity met Visual Editing.
 
-## Featuring
+| | |
+|---|---|
+| **Klant** | Jacques Buith (TODO: contactpersoon) |
+| **Bedrijf** | All This |
+| **Status** | Live op netlify.app (TODO: eigen domein) |
+| **SLA** | TODO |
+| **Live** | https://jacquesbuith.netlify.app |
+| **Netlify** | team All This, site `jacquesbuith` |
+| **CMS** | Sanity project `5j24etwc`, dataset `production`, Studio https://jacquesbuith.netlify.app/admin |
+| **Repo** | [github.com/astrobuildclub/jacquesbuith](https://github.com/astrobuildclub/jacquesbuith) |
+| **Notion** | TODO |
 
-- How to fetch content as data from [the Sanity Content Lake](https://www.sanity.io/docs/datastore)
-- How to render block content with [Portable Text](https://www.sanity.io/docs/presenting-block-text)
-- A [Sanity Studio](https://www.sanity.io/docs/sanity-studio) to create and edit content
-- How to crop and render images with [Sanity Image URLs](https://www.sanity.io/docs/presenting-images)
+## Stack
 
-## Prerequisites
+- Astro 5 · Sanity 4 (Studio in de site op `/admin`) · Node 22 (`.nvmrc`) · SSR (`output: 'server'`, `@astrojs/netlify`)
+- Styling: SCSS met `utopia-core-scss` (fluid type en space) · Fonts: Inter, PT Serif, IBM Plex Mono (Google Fonts)
+- Slider: Swiper · Animatie: geen
+- Consent: geen · Hosting: Netlify
 
-- [Node.js](https://nodejs.org/en/) (v16.12 or later)
+## Lokaal starten
 
-## Getting started
-
-Run the following commands
-
-1. `npm install` to install dependencies
-2. `npx sanity@latest init --env`, this will:
-
-   - ask you to select or create a Sanity project and dataset
-   - output a `.env` file with appropriate variables
-   - _(or use `sanity init --env` if you have the CLI installed)_
-
-3. `npm run dev` to start the development server
-
-Your Astro app should now be running on [http://localhost:4321/](http://localhost:4321/) and Studio on [http://localhost:4321/admin](http://localhost:4321/admin).
-
-### Add content
-
-1. Visit the Studio and create and publish a new `Post` document
-2. Visit the homepage and refresh the page to see your content rendered on the page
-
-The schema for the `Post` document is defined in the `/schema` folder. You can [add more document types](https://www.sanity.io/docs/schema-types) to the Studio to suit your needs.
-
-## Removing TypeScript
-
-If you do not wish to use TypeScript, we've included a `remove-typescript.mjs` file in the root of this repository. You can run this file with `node remove-typescript.mjs` to strip all types from this project. Please run this before tampering with any code to ensure that all types are properly removed.
-
-If you intend to use TypeScript, you can safely remove the `remove-typescript.mjs` file.
-
-## Removing the embedded Studio
-
-If you wish to manage and host the Studio separately, you remove the `studioBasePath` property for the `sanity` configuration in `astro.config.mjs`. You can also remove the following dependencies:
-
-- `output` in `astro.config.mjs`…
-  - …and `adapter` in `astro.config.mjs`
-- `react()` in `astro.config.mjs`
-- `@sanity/vision` `react` `react-dom` `@types/react` `@types/react-dom` from `package.json`
-- `schema` folder (you might want to copy this to the new Studio location)
-- `sanity.config.ts` (you might want to copy this to the new Studio location)
-
-## Deployments
-
-Feel free to deploy the App to whichever hosting provider you prefer ([Vercel](https://vercel.com/), [Netlify](https://netlify.com), [Cloudflare](https://pages.cloudflare.com/), etc). Remember [to change the adapter](https://docs.astro.build/en/guides/server-side-rendering/#adding-an-adapter) in the `astro.config.mjs` file to match your hosting provider.
-
-### Deploying the Studio on \*\.sanity.studio
-
-You can also deploy the Sanity Studio on its own URL by running `npx sanity deploy`, provided you have added a [`sanity.cli.ts` configuration file](https://www.sanity.io/docs/cli):
-
-```ts
-// sanity.cli.ts
-import { defineCliConfig } from "sanity/cli";
-
-export default defineCliConfig({
-  api: {
-    projectId: "<your-project-id>",
-    dataset: "<your-dataset-name>",
-  },
-});
+```bash
+nvm use
+npm install
+cp .env.example .env   # vul de waarden in, zie tabel
+npm run dev            # http://localhost:4321, Studio op /admin
 ```
-# Narwal-JB
+
+Overige scripts: `npm run build` (incl. `astro check` en `tsc`), `npm run preview`.
+
+### Environment-variabelen
+
+| Naam | Waarvoor | Waar te vinden |
+|---|---|---|
+| `PUBLIC_SANITY_PROJECT_ID` | Sanity project (`5j24etwc`) | sanity.io/manage |
+| `PUBLIC_SANITY_DATASET` | Dataset (`production`) | sanity.io/manage |
+| `PUBLIC_SANITY_USE_CDN` | Sanity API-CDN gebruiken (`true`/`false`) | n.v.t. |
+| `SANITY_API_READ_TOKEN` | Drafts en Visual Editing (geheim, rol Viewer) | sanity.io/manage → API → Tokens |
+
+Waarden staan nooit in git. Productiewaarden: Netlify → Site configuration → Environment variables (let op deploy contexts: ook voor Deploy previews zetten).
+
+## Structuur
+
+```
+schema/              Sanity-schema's
+  contentTypes/      post, page, settings, siteSettings
+  sectionBlocks/     text, image, video, quote, textImage
+  elements/          blockContent, cta
+src/
+  components/        Astro-componenten, sectionBlocks/ per blok
+  layouts/           Layout.astro (incl. <VisualEditing>)
+  pages/             Routes: /, /about, /media, /post/[slug], api/preview
+  utils/             Datalaag: load-query.ts, sanity.ts (queries), resolve.ts (Presentation)
+  middleware.ts      Zet Visual Editing per request aan of uit
+  assets/scss/       Tokens, base, utopia
+sanity.config.ts     Studio-config (structure, vision, presentation)
+```
+
+## Content en CMS
+
+- Content types: **Posts**, **Pages** (homepage, about, met section blocks) en **Settings** (singleton).
+- De klant bewerkt alles in de Studio op `/admin`.
+- Visual Editing: open in de Studio de Presentation tool. Die roept `/api/preview` aan met een tijdelijk secret; is dat geldig, dan zet de site een preview-cookie. Alleen binnen de iframe van de Studio zie je dan drafts en klikbare overlays; bezoekers en gewone tabs zien altijd gepubliceerde content.
+
+## Privacy, toegankelijkheid en SEO
+
+- Consent: geen consentoplossing en geen tracking gevonden. `VideoBlock` is nog leeg; bij embeds (YouTube/Vimeo) is consent nodig.
+- WCAG 2.2 AA: TODO, nog niet getoetst.
+- SEO: meta en Open Graph via `SiteMeta.astro`. Geen sitemap, robots.txt, JSON-LD of `llms.txt`.
+
+## Deploy
+
+- `main` → productie (Netlify) · pull requests → deploy preview
+- Werkwijze: branch → PR → preview checken → merge
+
+## Bekende issues en afspraken
+
+- `og:url` valt terug op `https://mier.as/…` omdat `site` niet in `astro.config.mjs` staat.
+- Zonder `SANITY_API_READ_TOKEN` op Netlify werkt Visual Editing niet.
+- `@astrojs/vercel` staat nog in de dependencies maar wordt niet gebruikt.
+
+---
+
+Eigenaar: All This · Wat er gedaan is: zie [`CHANGELOG.md`](CHANGELOG.md) · Werkafspraken voor ontwikkelaars en AI-agents: [`AGENTS.md`](AGENTS.md)

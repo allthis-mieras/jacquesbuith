@@ -12,7 +12,6 @@ const {
   PUBLIC_SANITY_PROJECT_ID,
   PUBLIC_SANITY_DATASET,
   PUBLIC_SANITY_USE_CDN,
-  PUBLIC_SANITY_VISUAL_EDITING_ENABLED
 } = loadEnv(import.meta.env.MODE, process.cwd(), "");
 
 
