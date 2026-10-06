@@ -15,9 +15,8 @@ const {
   author = "Jacuqes Buith",
 } = Astro.props;
 
-// Volgens officiële guide: alleen checken op environment variable
-const visualEditingEnabled =
-  import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED == "true";
+// Alleen aan als /api/preview de preview-cookie heeft gezet (zie src/middleware.ts)
+const visualEditingEnabled = Astro.locals.visualEditing;
 ---
 
 <html lang="en">

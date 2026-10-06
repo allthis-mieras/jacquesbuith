@@ -1,27 +1,32 @@
-import type { APIRoute } from 'astro';
+import type { APIRoute } from "astro";
+import { sanityClient } from "sanity:client";
+import { validatePreviewUrl } from "@sanity/preview-url-secret";
+import { PREVIEW_COOKIE } from "../../utils/visual-editing";
 
+// Wordt aangeroepen door de Presentation tool (previewMode.enable in sanity.config.ts).
+// De Studio maakt een tijdelijk secret aan; dat valideren we hier met de read token.
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
-  const url = new URL(request.url);
-  const slug = url.searchParams.get('slug') || '/';
-  
-  // Check if request comes from Sanity Studio (optional, for extra security)
-  const referer = request.headers.get('referer');
-  const isFromStudio = referer && (
-    referer.includes('/admin') ||
-    referer.includes('sanity.studio') ||
-    referer.includes('sanity.io')
+  const token = import.meta.env.SANITY_API_READ_TOKEN;
+  if (!token) {
+    return new Response("SANITY_API_READ_TOKEN ontbreekt", { status: 500 });
+  }
+
+  const { isValid, redirectTo = "/" } = await validatePreviewUrl(
+    sanityClient.withConfig({ token }),
+    request.url,
   );
-  
-  // Set preview cookie for Astro SSR
-  // This enables Visual Editing automatically
-  cookies.set('sanity-preview', 'true', {
+
+  if (!isValid) {
+    return new Response("Ongeldig preview-secret", { status: 401 });
+  }
+
+  cookies.set(PREVIEW_COOKIE, "true", {
+    path: "/",
     httpOnly: true,
-    secure: import.meta.env.PROD, // Only secure in production
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 // 24 hours
+    secure: import.meta.env.PROD,
+    // In productie 'none', zodat het ook werkt als de Studio op een ander domein draait.
+    sameSite: import.meta.env.PROD ? "none" : "lax",
   });
 
-  // Redirect to the preview page
-  // Visual Editing will be enabled automatically via the cookie and referer header
-  return redirect(slug);
+  return redirect(redirectTo, 307);
 };

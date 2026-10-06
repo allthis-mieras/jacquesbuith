@@ -64,7 +64,13 @@ export default defineConfig({
     visionTool(),
     presentationTool({
       resolve,
-      previewUrl: productionUrl,
+      previewUrl: {
+        initial: productionUrl,
+        previewMode: {
+          enable: "/api/preview",
+          disable: "/api/preview/disable",
+        },
+      },
     }),
   ],
   schema: {

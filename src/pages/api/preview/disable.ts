@@ -1,9 +1,7 @@
-import type { APIRoute } from 'astro';
+import type { APIRoute } from "astro";
+import { PREVIEW_COOKIE } from "../../../utils/visual-editing";
 
 export const GET: APIRoute = async ({ cookies, redirect }) => {
-  // Clear preview cookie
-  cookies.delete('sanity-preview');
-
-  // Redirect to home page
-  return redirect('/');
+  cookies.delete(PREVIEW_COOKIE, { path: "/" });
+  return redirect("/", 307);
 };
