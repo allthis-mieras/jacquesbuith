@@ -7,6 +7,8 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ## [Unreleased]
 
+## [2026-10-06] (PR #2)
+
 ### Opgelost
 - Visual Editing in de Presentation tool maakt weer verbinding: het script wordt geladen zodra de Studio de preview aanzet.
 
