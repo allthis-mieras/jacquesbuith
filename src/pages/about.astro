@@ -1,15 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
 
 import TextBlock from "../components/sectionBlocks/TextBlock.astro";
 import ImageBlock from "../components/sectionBlocks/ImageBlock.astro";
 import QuoteBlock from "../components/sectionBlocks/QuoteBlock.astro";
+import SanityImage from "../components/SanityImage.astro";
 
 import { getAboutPage } from "../utils/sanity";
 import { PortableText } from "astro-portabletext";
-import { urlFor } from "../utils/image";
-// import { getImage, Image } from "astro:assets";
 
 const page: {
   title?: string;
@@ -18,9 +16,6 @@ const page: {
   content: any[];
 } = await getAboutPage();
 
-const imageUrl = urlFor(page.heroImage).url();
-
-// console.log("About page:", imageUrl);
 ---
 
 <Layout title={page.title ?? ""}>
@@ -38,13 +33,14 @@ const imageUrl = urlFor(page.heroImage).url();
         {
           page.heroImage && (
             <div class="page__cover">
-              <Image
-                src={imageUrl}
-                widths={[480, 960, 1440, 1920, 2560]}
-                inferSize
-                sizes="(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1080px) 720px, 1080px"
+              <SanityImage
+                image={page.heroImage}
+                sizes="(min-width: 896px) 50vw, 100vw"
                 alt="Image"
                 class="page__cover"
+                sizing="cover"
+                loading="eager"
+                fetchpriority="high"
               />
             </div>
           )
@@ -96,10 +92,10 @@ const imageUrl = urlFor(page.heroImage).url();
   .page__cover--none {
     width: 100%;
     height: auto;
-    object-fit: cover;
     order: 1;
     aspect-ratio: 4 / 3;
     border-radius: var(--radius-default);
+    overflow: hidden;
   }
 
   .page__cover--none {

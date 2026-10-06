@@ -1,0 +1,54 @@
+---
+import { buildResponsiveImage } from "../utils/image";
+
+interface Props {
+  image?: Parameters<typeof buildResponsiveImage>[0];
+  alt?: string;
+  sizes?: string;
+  class?: string;
+  /** fluid: schaalt met de container. cover: vult een kader. plain: de aanroeper stylet de img. */
+  sizing?: "fluid" | "cover" | "plain";
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+  widths?: number[];
+}
+
+const {
+  image,
+  alt = "",
+  sizes = "100vw",
+  class: className,
+  sizing = "fluid",
+  loading = "lazy",
+  fetchpriority = "auto",
+  widths,
+} = Astro.props;
+
+const picture = buildResponsiveImage(image, widths);
+---
+
+{
+  picture && (
+    <img
+      src={picture.src}
+      srcset={picture.srcset}
+      sizes={sizes}
+      width={picture.width}
+      height={picture.height}
+      alt={alt}
+      class:list={[className, sizing === "cover" && "cover"]}
+      style={sizing === "fluid" ? "width: 100%; height: auto" : undefined}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchpriority}
+    />
+  )
+}
+
+<style>
+  .cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
