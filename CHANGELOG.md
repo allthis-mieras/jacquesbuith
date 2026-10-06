@@ -7,7 +7,7 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ## [Unreleased]
 
-## [2026-10-06]
+## [2026-10-06] (PR #4)
 
 ### Gewijzigd
 - Sanity-afbeeldingen krijgen een `srcset` via de Sanity-CDN (`auto=format`, kwaliteit 75), afgestemd op de layoutbreedte. Retina kiest zelf een grotere variant. Astro’s `/_image` herschaalt die bestanden niet meer.
