@@ -32,5 +32,6 @@ Lees eerst `README.md` voor context en `CHANGELOG.md` voor recente wijzigingen.
 - Astro `<Image>` alleen voor lokale bestanden in `src/`.
 
 ## Projectspecifiek
-- Visual Editing werkt via draft mode: de Presentation tool roept `/api/preview` aan, dat het secret valideert en de cookie `sanity-preview` zet. `src/middleware.ts` zet Visual Editing alleen aan als die cookie er is én de request uit een iframe komt (`Sec-Fetch-Dest: iframe`); `loadQuery()` en `Layout.astro` gebruiken die status. Haal content altijd op via `loadQuery()`.
+- Visual Editing werkt via draft mode: de Presentation tool roept `/api/preview` aan, dat het secret valideert en de cookie `sanity-preview` zet. Die cookie is ondertekend met `SANITY_API_READ_TOKEN` (`src/utils/visual-editing.ts`); nooit terug naar een vaste waarde als `true`. `src/middleware.ts` zet Visual Editing alleen aan als die cookie er is én de request uit een iframe komt (`Sec-Fetch-Dest: iframe`); `loadQuery()` en `Layout.astro` gebruiken die status. Haal content altijd op via `loadQuery()`.
+- Page transitions (`ClientRouter`) staan in de Presentation tool uit via `data-astro-reload` (script in `Layout.astro`): de router haalt pagina's op via `fetch` en dan valt Visual Editing weg.
 - `SANITY_API_READ_TOKEN` (Viewer) is nodig op Netlify, anders werkt de preview niet.
