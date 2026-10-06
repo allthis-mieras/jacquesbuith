@@ -24,5 +24,5 @@ Lees eerst `README.md` voor context en `CHANGELOG.md` voor recente wijzigingen.
 - AVG: geen tracking of third-party embeds zonder consent.
 
 ## Projectspecifiek
-- Visual Editing werkt via draft mode: de Presentation tool roept `/api/preview` aan, dat het secret valideert en de cookie `sanity-preview` zet. `src/middleware.ts` leest die cookie; `loadQuery()` en `Layout.astro` gebruiken die status. Haal content altijd op via `loadQuery()`.
+- Visual Editing werkt via draft mode: de Presentation tool roept `/api/preview` aan, dat het secret valideert en de cookie `sanity-preview` zet. `src/middleware.ts` zet Visual Editing alleen aan als die cookie er is én de request uit een iframe komt (`Sec-Fetch-Dest: iframe`); `loadQuery()` en `Layout.astro` gebruiken die status. Haal content altijd op via `loadQuery()`.
 - `SANITY_API_READ_TOKEN` (Viewer) is nodig op Netlify, anders werkt de preview niet.

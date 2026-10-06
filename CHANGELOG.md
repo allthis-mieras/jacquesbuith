@@ -12,6 +12,7 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ### Gewijzigd
 - Visual Editing staat per request aan via een preview-cookie (draft mode) in plaats van via `PUBLIC_SANITY_VISUAL_EDITING_ENABLED`. Bezoekers zien altijd gepubliceerde content.
+- Visual Editing en drafts alleen binnen de iframe van de Presentation tool (`Sec-Fetch-Dest: iframe`); in een gewone tab zie je de live site, ook met preview-cookie.
 - `/api/preview` valideert het preview-secret van de Studio met `@sanity/preview-url-secret`.
 - Perspective `previewDrafts` vervangen door `drafts`.
 
