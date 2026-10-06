@@ -7,8 +7,14 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ## [Unreleased]
 
+## [2026-10-06]
+
+### Gewijzigd
+- Sanity-afbeeldingen krijgen een `srcset` via de Sanity-CDN (`auto=format`, kwaliteit 75), afgestemd op de layoutbreedte. Retina kiest zelf een grotere variant. Astro’s `/_image` herschaalt die bestanden niet meer.
+
 ### Onderhoud
 - TypeScript-waarschuwingen opgelost: ongebruikte imports verwijderd en deprecated `ViewTransitions` vervangen door `ClientRouter`.
+- `AGENTS.md` beschrijft hoe Sanity-beelden in Astro worden geleverd.
 
 ## [2026-10-06] (PR #2)
 

@@ -1,29 +1,18 @@
 ---
-import { Image } from "astro:assets";
-import { urlFor } from "../../utils/image";
+import SanityImage from "../SanityImage.astro";
 
 const { image } = Astro.props;
-const imageUrl = image?.asset ? urlFor(image.asset).url() : "";
-
-console.log("Hello, this is the image:", image);
 ---
 
 {
-  imageUrl && (
+  image?.asset && (
     <div class="image-block">
-      {imageUrl && (
-        <Image
-          src={imageUrl}
-          inferSize
-          widths={[480, 960, 1440, 1920, 2560]}
-          sizes="(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1080px) 720px, 1080px"
-          alt={image.alt ?? "Image"}
-          class="post__cover"
-        />
-      )}
-      {/* 
-      <img src={imageUrl} alt={image.alt ?? "Image"} />
-      {image.caption && <p class="caption">{image.caption}</p>} */}
+      <SanityImage
+        image={image}
+        sizes="100vw"
+        alt={image.alt ?? "Image"}
+        class="post__cover"
+      />
     </div>
   )
 }

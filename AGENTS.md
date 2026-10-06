@@ -23,6 +23,14 @@ Lees eerst `README.md` voor context en `CHANGELOG.md` voor recente wijzigingen.
 - Toegankelijkheid: WCAG 2.2 AA. Semantische HTML, focus-states, `prefers-reduced-motion` respecteren.
 - AVG: geen tracking of third-party embeds zonder consent.
 
+## Afbeeldingen (Sanity + Astro)
+- Sanity-beelden gaan via `@sanity/image-url` en een `srcset`. Niet via Astro `<Image>` of `/_image`: dat downloadt het origineel en herschaalt het nog een keer.
+- `sizes` beschrijft de layout (`100vw`, of `50vw` in een kolom). De browser vermenigvuldigt dat met de pixelratio, dus een aparte `@2x` is niet nodig.
+- Breedtestappen: 480, 768, 1080, 1440, 1920, 2400, plus het origineel tot maximaal 2560. Nooit groter dan het bronbestand (`fit=max`).
+- Formaat: `.auto('format')` en kwaliteit 75. De browser krijgt AVIF als hij dat accepteert, anders WebP. Zet geen `fm=avif`: Sanity weigert dat.
+- `src` is een middenmaat (rond 1280), niet de grootste variant. Zet `width` en `height` voor de verhouding.
+- Astro `<Image>` alleen voor lokale bestanden in `src/`.
+
 ## Projectspecifiek
 - Visual Editing werkt via draft mode: de Presentation tool roept `/api/preview` aan, dat het secret valideert en de cookie `sanity-preview` zet. `src/middleware.ts` zet Visual Editing alleen aan als die cookie er is én de request uit een iframe komt (`Sec-Fetch-Dest: iframe`); `loadQuery()` en `Layout.astro` gebruiken die status. Haal content altijd op via `loadQuery()`.
 - `SANITY_API_READ_TOKEN` (Viewer) is nodig op Netlify, anders werkt de preview niet.

@@ -3,13 +3,10 @@ import Layout from "../../layouts/Layout.astro";
 import RelatedPosts from "../../components/RelatedPosts.astro";
 
 import type { InferGetStaticParamsType } from "astro";
-import { Image } from "astro:assets";
 import { PortableText } from "astro-portabletext";
+import SanityImage from "../../components/SanityImage.astro";
 import { formatDate } from "../../utils";
 import { getPost, getPosts } from "../../utils/sanity";
-import { urlFor } from "../../utils/image";
-
-// import type { Image } from "@sanity/types";
 
 // Prerendering disabled for Visual Editing support
 // export const prerender = true;
@@ -42,11 +39,6 @@ export interface ImageAsset {
   };
 }
 
-const imageUrl = post.mainImage?.asset
-  ? urlFor(post.mainImage.asset).url()
-  : "";
-
-// console.log("post image:", post.mainImage);
 ---
 
 <Layout title={post.title!}>
@@ -85,13 +77,13 @@ const imageUrl = post.mainImage?.asset
       </div>
       {
         post.mainImage ? (
-          <Image
-            src={imageUrl}
-            widths={[240, 540, 720, 1080]}
-            inferSize
-            sizes="(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1080px) 720px, 1080px"
+          <SanityImage
+            image={post.mainImage}
+            sizes="(min-width: 906px) 50vw, 100vw"
             alt="Cover image"
             class="post__cover"
+            sizing="plain"
+            loading="eager"
           />
         ) : (
           <div class="post__cover--none" />
@@ -183,7 +175,7 @@ const imageUrl = post.mainImage?.asset
     color: var(--neutral-100);
   }
 
-  .post__cover,
+  :global(.post__cover),
   .post__cover--none {
     width: 100%;
     height: auto;
@@ -204,7 +196,7 @@ const imageUrl = post.mainImage?.asset
       grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
       gap: var(--space-2xl);
     }
-    .post__cover,
+    :global(.post__cover),
     .post__cover--none {
       display: block;
       width: 100%;
