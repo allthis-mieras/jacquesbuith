@@ -21,3 +21,5 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ### Onderhoud
 - `CHANGELOG.md`, `AGENTS.md` en `CLAUDE.md` toegevoegd.
+- README herschreven volgens de standaard-template.
+- `.env.example` wijst nu naar het echte Sanity-project (`5j24etwc`, `production`) in plaats van de starter-waarden.
