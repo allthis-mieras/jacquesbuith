@@ -1,9 +1,5 @@
 import { defineField, defineType } from "sanity";
 import { DocumentIcon, HomeIcon } from "@sanity/icons";
-import { sanityClient } from "sanity:client";
-
-// Importeer de content modules
-const client = sanityClient.withConfig({ apiVersion: "2023-08-28" });
 
 export default defineType({
   name: "page",

@@ -7,6 +7,9 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ## [Unreleased]
 
+### Onderhoud
+- TypeScript-waarschuwingen opgelost: ongebruikte imports verwijderd en deprecated `ViewTransitions` vervangen door `ClientRouter`.
+
 ## [2026-10-06] (PR #2)
 
 ### Opgelost

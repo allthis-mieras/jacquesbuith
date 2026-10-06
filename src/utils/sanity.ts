@@ -1,4 +1,3 @@
-import { sanityClient } from "sanity:client";
 import type { PortableTextBlock } from "@portabletext/types";
 import type { Slug } from "@sanity/types";
 import groq from "groq";
