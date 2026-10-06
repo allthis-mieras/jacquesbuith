@@ -8,7 +8,7 @@ import 'swiper/css/autoplay';
 
 // Function to initialize the Swiper instance
 function initializeSwiper() {
-  const swiper = new Swiper('.swiper', {
+  new Swiper('.swiper', {
     modules: [Navigation, Pagination, EffectFade, Autoplay],
     navigation: {
       nextEl: '.swiper-button-next',
