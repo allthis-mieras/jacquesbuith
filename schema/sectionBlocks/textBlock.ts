@@ -1,5 +1,4 @@
 import {defineType, defineField} from 'sanity'
-import blockContent from '../elements/blockContent'
 
 export default defineType({
   name: 'textBlock',
