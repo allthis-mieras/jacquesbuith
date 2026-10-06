@@ -7,6 +7,8 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ## [Unreleased]
 
+## [2026-10-06] (PR #5)
+
 ### Beveiliging
 - De preview-cookie is nu ondertekend (HMAC met `SANITY_API_READ_TOKEN`) en verloopt na 12 uur. Voorheen kon iedereen met een zelfgezette cookie `sanity-preview=true` en de header `Sec-Fetch-Dest: iframe` drafts opvragen.
 - Responses aan requests met een geldige preview-cookie krijgen `Cache-Control: private, no-store` en `Vary: Cookie, Sec-Fetch-Dest`.
