@@ -7,6 +7,14 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ## [Unreleased]
 
+## [2026-10-07] (PR #6)
+
+### Opgelost
+- Presentation tool na navigatie: de adresbalk bleef op `/api/preview` staan, het documentpaneel toonde de vorige pagina en de Edit-toggle reageerde niet meer. Eigen `VisualEditing`-component (`src/components/VisualEditing.tsx`) met een history-adapter: elke pagina meldt zijn URL aan de Studio, en navigatie vanuit de Studio werkt.
+
+### Onderhoud
+- `@sanity/visual-editing` 2.15.4 als directe dependency (dezelfde versie die `@sanity/astro` 3.2 gebruikt). De lockfile werkt daarbij een paar Studio-dependencies bij binnen hun bestaande ranges (`motion`/`framer-motion` 12.43, `@sanity/ui` 2.16.29, `@floating-ui/*`).
+
 ## [2026-10-06] (PR #5)
 
 ### Beveiliging
