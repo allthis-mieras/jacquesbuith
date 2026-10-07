@@ -1,5 +1,5 @@
 ---
-import { VisualEditing } from "@sanity/astro/visual-editing";
+import VisualEditing from "../components/VisualEditing";
 
 import "../assets/scss/global.scss";
 import "../assets/scss/main.scss";
@@ -53,7 +53,7 @@ const visualEditingEnabled = Astro.locals.visualEditing;
         <slot />
       </main>
       <Footer />
-      <VisualEditing enabled={visualEditingEnabled} />
+      {visualEditingEnabled && <VisualEditing client:only="react" />}
       {
         visualEditingEnabled && (
           <script is:inline>
