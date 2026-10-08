@@ -74,8 +74,15 @@ sanity.config.ts     Studio-config (structure, vision, presentation)
 
 ## Deploy
 
-- `main` → productie (Netlify) · pull requests → deploy preview
-- Werkwijze: branch → PR → preview checken → merge
+### Branches
+
+| Branch | Deploy | URL |
+|---|---|---|
+| `main` | Productie | https://jacquesbuith.netlify.app |
+| `staging` | Branch deploy (goedgekeurde features, nog niet live) | https://staging--jacquesbuith.netlify.app |
+| PR's | Deploy preview | link in de PR |
+
+Features gaan via een PR naar `staging`. Naar `main` alleen gebundelde releases (PR `staging → main`) en hotfixes. Commits met alleen documentatie (`*.md`, `.github/`) starten geen build. Zie `~/Code/_standards/DEPLOY.md`.
 
 ## Bekende issues en afspraken
 

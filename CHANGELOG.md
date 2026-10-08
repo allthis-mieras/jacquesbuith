@@ -7,6 +7,13 @@ Categorieën: **Toegevoegd**, **Gewijzigd**, **Opgelost**, **Verwijderd**, **Bev
 
 ## [Unreleased]
 
+### Gewijzigd
+- Deploy-workflow volgens `_standards/DEPLOY.md`: features via PR naar `staging` (branch deploy op `staging--jacquesbuith.netlify.app`), gebundelde releases naar `main`. Branch protection op `staging`.
+- `netlify.toml`: geen build bij commits met alleen documentatie.
+
+### Onderhoud
+- `.github/dependabot.yml`: wekelijkse updates naar `staging`, gegroepeerd (Astro, Sanity, minor/patch). `.github/renovate.json` (overblijfsel uit de Sanity-template, Renovate-app niet geïnstalleerd) verwijderd.
+
 ## [2026-10-07] (PR #6)
 
 ### Opgelost
